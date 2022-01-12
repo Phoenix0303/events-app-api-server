@@ -6,12 +6,12 @@
 //      https://github.com/Phoenix0303/events-app-api-server.git
 //      main
 //      dtc-jan21-u108
-//      api-server
+//      api-server-image
 //      cluster-1 
 //      us-central1-c
 //      the following values can be found in the yaml:
-//      api-server-image
-//      api-server-image (name of the container to be replaced - in the template/spec section of the deployment)
+//      demo-api
+//      demo-api (name of the container to be replaced - in the template/spec section of the deployment)
 
 
 pipeline {
@@ -66,12 +66,12 @@ pipeline {
                         }
                     }
             steps {
-                echo "submit gcr.io/dtc-jan21-u108/api-server:v2.${env.BUILD_ID}"
-                sh "gcloud builds submit -t gcr.io/dtc-jan21-u108/api-server:v2.${env.BUILD_ID} ."
+                echo "submit gcr.io/dtc-jan21-u108/api-server-image:v2.${env.BUILD_ID}"
+                sh "gcloud builds submit -t gcr.io/dtc-jan21-u108/api-server-image:v2.${env.BUILD_ID} ."
                 echo 'Get cluster credentials'
                 sh 'gcloud container clusters get-credentials cluster-1 --zone us-central1-c --project dtc-jan21-u108'
-                echo "Update the image to use gcr.io/dtc-jan21-u108/api-server:v2.${env.BUILD_ID}"
-                sh "kubectl set image deployment/api-server-image api-server-image=gcr.io/dtc-jan21-u108/api-server:v2.${env.BUILD_ID} --record"
+                echo "Update the image to use gcr.io/dtc-jan21-u108/api-server-image:v2.${env.BUILD_ID}"
+                sh "kubectl set image deployment/demo-api demo-api=gcr.io/dtc-jan21-u108/api-server-image:v2.${env.BUILD_ID} --record"
             }
         }            
     }
